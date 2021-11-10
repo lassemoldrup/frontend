@@ -1,0 +1,30 @@
+<h1>Mine Aktier</h1>
+
+<table *ngIf="ownedShares" mat-table [dataSource]="ownedShares" class="mat-elevation-z8 table">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Navn</th>
+        <td mat-cell *matCellDef="let ownedShare"> {{ ownedShare.share.name }} </td>
+    </ng-container>
+    <ng-container matColumnDef="buyPrice">
+        <th mat-header-cell *matHeaderCellDef> Købspris</th>
+        <td mat-cell *matCellDef="let ownedShare"> {{ ownedShare.buyPrice }} </td>
+    </ng-container>
+    <ng-container matColumnDef="sellPrice">
+        <th mat-header-cell *matHeaderCellDef> Salgspris</th>
+        <td mat-cell *matCellDef="let ownedShare"> {{ ownedShare.share.currentPrice }}</td>
+    </ng-container>
+    <ng-container matColumnDef="buyDate">
+        <th mat-header-cell *matHeaderCellDef> Dato</th>
+        <td mat-cell *matCellDef="let ownedShare"> {{ ownedShare.buyDate }} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let share">
+            <button mat-flat-button color="warn" (click)="sellShare(share.id)">Sælg</button>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+</table>
+
+<app-error-card *ngIf="error" [error]="error"></app-error-card>

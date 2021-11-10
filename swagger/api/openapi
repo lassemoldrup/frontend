@@ -1,0 +1,167 @@
+---
+openapi: 3.0.3
+info:
+  title: Generated API
+  version: "1.0"
+paths:
+  /account:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+  /account/{accountId}:
+    get:
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /investment/share:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Share'
+  /investment/share/buy:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: OK
+  /investment/share/owned:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OwnedShare'
+  /investment/share/sell:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: OK
+  /transaction/{accountId}:
+    get:
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        balance:
+          format: double
+          type: number
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        number:
+          type: string
+        type:
+          $ref: '#/components/schemas/AccountType'
+    AccountType:
+      enum:
+      - HIDDEN
+      - INVESTMENT
+      - NORMAL
+      type: string
+    OwnedShare:
+      type: object
+      properties:
+        buyDate:
+          format: date
+          type: string
+        buyPrice:
+          format: double
+          type: number
+        id:
+          $ref: '#/components/schemas/UUID'
+        share:
+          $ref: '#/components/schemas/Share'
+    Share:
+      type: object
+      properties:
+        currentPrice:
+          format: double
+          type: number
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+    Transaction:
+      type: object
+      properties:
+        accountFrom:
+          $ref: '#/components/schemas/Account'
+        accountTo:
+          $ref: '#/components/schemas/Account'
+        amount:
+          format: double
+          type: number
+        date:
+          format: date
+          type: string
+        description:
+          type: string
+        id:
+          $ref: '#/components/schemas/UUID'
+        transactionCategory:
+          $ref: '#/components/schemas/TransactionCategory'
+    TransactionCategory:
+      enum:
+      - CAR
+      - FOOD
+      - INVESTMENT
+      - OTHER
+      - SHOPPING
+      type: string
+    UUID:
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      type: string
